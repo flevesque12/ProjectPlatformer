@@ -12,9 +12,16 @@ public class PlayerCollision : MonoBehaviour
     private bool m_OnGroundCollision;
     //any wall collision left or right
     private bool m_OnWallCollision;
+    public bool OnWallCollision { get { return m_OnWallCollision; } }
+
     private bool m_OnRightWallCollision;
+    public bool OnRightWallCollision { get { return m_OnRightWallCollision; } }
+
     private bool m_OnLeftWallCollision;
+    public bool OnLeftWallCollision { get { return m_OnLeftWallCollision; } }
+
     private int m_WallSide;
+    public int WallSide { get { return m_WallSide; } }
 
     [Header("Collision")]
     [Range(0.25f, 1f)]
@@ -43,7 +50,7 @@ public class PlayerCollision : MonoBehaviour
         m_OnLeftWallCollision = Physics2D.OverlapCircle((Vector2)transform.position + m_RightOffset, m_CollisionRadius, m_GroundMaskLayer);
         m_OnRightWallCollision = Physics2D.OverlapCircle((Vector2)transform.position + m_LeftOffset, m_CollisionRadius, m_GroundMaskLayer);
 
-
+        m_WallSide = m_OnRightWallCollision ? -1 : 1;
     }
 
     private void OnDrawGizmos()

@@ -51,14 +51,44 @@ public class PlayerCollision : MonoBehaviour
         m_OnRightWallCollision = Physics2D.OverlapCircle((Vector2)transform.position + m_LeftOffset, m_CollisionRadius, m_GroundMaskLayer);
 
         m_WallSide = m_OnRightWallCollision ? -1 : 1;
+        
     }
 
     private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
+    {       
 
-        Gizmos.DrawWireSphere((Vector2)transform.position + m_BottomOffset, m_CollisionRadius);
-        Gizmos.DrawWireSphere((Vector2)transform.position + m_LeftOffset, m_CollisionRadius);
-        Gizmos.DrawWireSphere((Vector2)transform.position + m_RightOffset, m_CollisionRadius);
+        if (m_OnGroundCollision)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere((Vector2)transform.position + m_BottomOffset, m_CollisionRadius);
+        }
+        else
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere((Vector2)transform.position + m_BottomOffset, m_CollisionRadius);
+        }
+
+        if (m_OnLeftWallCollision)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere((Vector2)transform.position + m_LeftOffset, m_CollisionRadius);
+        }
+        else
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere((Vector2)transform.position + m_LeftOffset, m_CollisionRadius);
+        }
+
+        if (m_OnRightWallCollision)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere((Vector2)transform.position + m_RightOffset, m_CollisionRadius);
+        }
+        else
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere((Vector2)transform.position + m_RightOffset, m_CollisionRadius);
+        }       
+        
     }
 }

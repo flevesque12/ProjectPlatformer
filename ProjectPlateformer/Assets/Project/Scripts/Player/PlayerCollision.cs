@@ -28,7 +28,7 @@ public class PlayerCollision : MonoBehaviour
     [Range(0.25f, 1f)]
     [SerializeField]
     private float m_CollisionRadius = 0.25f;
-    [SerializeField]
+    
     private Vector2 m_BottomOffset, m_RightOffset, m_LeftOffset;
     private Color m_DebugColliderColor = Color.red;
 

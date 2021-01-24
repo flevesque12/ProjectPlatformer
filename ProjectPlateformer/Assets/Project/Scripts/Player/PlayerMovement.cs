@@ -3,18 +3,14 @@
 public class PlayerMovement : MonoBehaviour
 {
     #region Variables
+
     [Header("Movement")]
     [SerializeField, Range(1f, 10f)] private float walkSpeed = 4.0f;
 
     [SerializeField] private float jumpHeight = 3f;
     [SerializeField] private float gravityScale = 8.5f;
-    [SerializeField] private float fallMultiplier = 2.5f;
-    [SerializeField] private float lowJumpMultiplier = 2f;
 
-    [SerializeField, Range(0.01f, 0.5f)] private float extraHeight = 0.02f;
-    
-    [SerializeField] private LayerMask groundLayerMask;
-    
+   
     [SerializeField] private float jumpTimeCounter = 0.35f;
     public float JumpTime { get; set; }
 
@@ -29,11 +25,9 @@ public class PlayerMovement : MonoBehaviour
     private Collider2D m_Collider;
     private SpriteRenderer m_Render;
     private Animator m_Anim;
-    
+
     private Vector2 m_PlayerDirectionY = Vector2.down;
-    
-    private bool m_IsAntigravityIsOn = false;
-    public bool IsIsAntigravityIsOn { get { return this.m_IsAntigravityIsOn; } }
+       
 
     private bool m_IsJumpStart = false;
     public bool IsJumpStart { get { return this.m_IsJumpStart; } }
@@ -42,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
     public bool IsOnFloor { get { return this.m_IsOnFloor; } set { this.IsOnFloor = value; } }
 
     private PlayerCollision m_PlayerCollision;
+    private FallModifier m_FallModifier;
+
     #endregion Variables
 
     // Start is called before the first frame update
@@ -52,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
         m_Render = GetComponent<SpriteRenderer>();
         m_Anim = GetComponent<Animator>();
         m_PlayerCollision = GetComponent<PlayerCollision>();
+        m_FallModifier = GetComponent<FallModifier>();
     }
 
     // Update is called once per frame
@@ -60,53 +57,32 @@ public class PlayerMovement : MonoBehaviour
         m_Velocity.x = Input.GetAxis("Horizontal");
 
         FlipSprite();
-        
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump")) && m_PlayerCollision.OnGroundCollision)
-        {            
-            m_IsJumping = true;
+
+        if (Input.GetButtonDown("Jump") && m_PlayerCollision.OnGroundCollision)
+        {
+            //m_IsJumping = true;
+            Jump();
         }
-        /*
+
         if (Input.GetKey(KeyCode.Space))
         {
             JumpExtended();
-        }*/
+        }
 
         if (Input.GetKeyUp(KeyCode.Space))
         {
             m_IsJumping = false;
         }
 
-        if (m_IsJumping)
-        {
-            Jump();
-        }
-
         ApplyAnimation();
-
-        
-        
     }
 
     private void FixedUpdate()
     {
         Move();
-
-        
-
-        if (m_rb.velocity.y < 0)
-        {            
-            m_rb.gravityScale = fallMultiplier;
-        }
-        else if (m_rb.velocity.y > 0 && !Input.GetButton("Jump"))
-        {
-            m_rb.gravityScale = lowJumpMultiplier;
-        }
-        else
-        {
-            m_rb.gravityScale = 1f;
-        }
+        m_FallModifier.FallModifierGravity();
     }
-        
+
     private void Jump()
     {
         m_IsJumping = true;
@@ -129,8 +105,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void Move()
-    {        
-            m_rb.velocity = new Vector2(m_Velocity.x * walkSpeed, m_rb.velocity.y);       
+    {
+        m_rb.velocity = new Vector2(m_Velocity.x * walkSpeed, m_rb.velocity.y);
     }
 
     private void ApplyAnimation()
@@ -155,12 +131,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (dotprod > 0)
         {
-           m_Render.flipX = false;
+            m_Render.flipX = false;
         }
-        else if(dotprod < 0)
+        else if (dotprod < 0)
         {
-             m_Render.flipX = true;
+            m_Render.flipX = true;
         }
     }
-
 }

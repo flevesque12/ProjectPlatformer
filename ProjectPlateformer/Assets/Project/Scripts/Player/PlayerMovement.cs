@@ -40,6 +40,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool m_IsOnFloor = false;
     public bool IsOnFloor { get { return this.m_IsOnFloor; } set { this.IsOnFloor = value; } }
+
+    private PlayerCollision m_PlayerCollision;
     #endregion Variables
 
     // Start is called before the first frame update
@@ -49,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
         m_rb = GetComponent<Rigidbody2D>();
         m_Render = GetComponent<SpriteRenderer>();
         m_Anim = GetComponent<Animator>();
+        m_PlayerCollision = GetComponent<PlayerCollision>();
     }
 
     // Update is called once per frame
@@ -58,33 +61,38 @@ public class PlayerMovement : MonoBehaviour
 
         FlipSprite();
         
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump")) && IsGrounded())
-        {
-            Jump();
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump")) && m_PlayerCollision.OnGroundCollision)
+        {            
+            m_IsJumping = true;
         }
-
+        /*
         if (Input.GetKey(KeyCode.Space))
         {
             JumpExtended();
-        }
+        }*/
 
         if (Input.GetKeyUp(KeyCode.Space))
         {
             m_IsJumping = false;
         }
 
-       
+        if (m_IsJumping)
+        {
+            Jump();
+        }
 
         ApplyAnimation();
 
-        //IsGrounded();
+        
         
     }
 
     private void FixedUpdate()
     {
         Move();
+
         
+
         if (m_rb.velocity.y < 0)
         {            
             m_rb.gravityScale = fallMultiplier;
@@ -98,26 +106,7 @@ public class PlayerMovement : MonoBehaviour
             m_rb.gravityScale = 1f;
         }
     }
-
-    public bool IsGrounded()
-    {
-        RaycastHit2D hit2d = Physics2D.Raycast(m_Collider.bounds.center, m_PlayerDirectionY, m_Collider.bounds.extents.y + extraHeight, groundLayerMask);
-
-        Color rayColor;
-        rayColor = Color.green;
-        if (hit2d.collider != null)
-        {
-            rayColor = Color.green;
-        }
-        else
-        {
-            rayColor = Color.red;
-        }
-        Debug.DrawRay(m_Collider.bounds.center, m_PlayerDirectionY * (m_Collider.bounds.extents.y + extraHeight), rayColor);
-        Debug.Log(hit2d.collider != null);
-        return hit2d.collider != null;
-    }
-
+        
     private void Jump()
     {
         m_IsJumping = true;
@@ -140,22 +129,13 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void Move()
-    {       
-
-        if (m_IsAntigravityIsOn == false)
-        {
-            m_rb.velocity = new Vector2(m_Velocity.x * walkSpeed, m_rb.velocity.y);
-        }
-
-        if (m_IsAntigravityIsOn)
-        {
-            m_rb.velocity = new Vector2(m_Velocity.x * walkSpeed, m_rb.velocity.y);
-        }
+    {        
+            m_rb.velocity = new Vector2(m_Velocity.x * walkSpeed, m_rb.velocity.y);       
     }
 
     private void ApplyAnimation()
     {
-        if (m_Velocity.x != 0 && IsGrounded())
+        if (m_Velocity.x != 0 && m_PlayerCollision.OnGroundCollision)
         {
             m_Anim.SetBool("IsWalking", true);
             m_IsMoving = true;

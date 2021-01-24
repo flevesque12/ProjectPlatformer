@@ -10,6 +10,7 @@ public class PlayerCollision : MonoBehaviour
     private Bounds m_Bounds;
 
     private bool m_OnGroundCollision;
+    public bool OnGroundCollision { get { return m_OnGroundCollision; } }
     //any wall collision left or right
     private bool m_OnWallCollision;
     public bool OnWallCollision { get { return m_OnWallCollision; } }
@@ -27,7 +28,7 @@ public class PlayerCollision : MonoBehaviour
     [Range(0.25f, 1f)]
     [SerializeField]
     private float m_CollisionRadius = 0.25f;
-    
+    [SerializeField]
     private Vector2 m_BottomOffset, m_RightOffset, m_LeftOffset;
     private Color m_DebugColliderColor = Color.red;
 
@@ -47,11 +48,12 @@ public class PlayerCollision : MonoBehaviour
 
         m_OnWallCollision = Physics2D.OverlapCircle((Vector2)transform.position + m_RightOffset, m_CollisionRadius, m_GroundMaskLayer) || Physics2D.OverlapCircle((Vector2)transform.position + m_LeftOffset, m_CollisionRadius, m_GroundMaskLayer);
 
-        m_OnLeftWallCollision = Physics2D.OverlapCircle((Vector2)transform.position + m_RightOffset, m_CollisionRadius, m_GroundMaskLayer);
-        m_OnRightWallCollision = Physics2D.OverlapCircle((Vector2)transform.position + m_LeftOffset, m_CollisionRadius, m_GroundMaskLayer);
+        m_OnLeftWallCollision = Physics2D.OverlapCircle((Vector2)transform.position + m_LeftOffset, m_CollisionRadius, m_GroundMaskLayer);
+        m_OnRightWallCollision = Physics2D.OverlapCircle((Vector2)transform.position + m_RightOffset, m_CollisionRadius, m_GroundMaskLayer);
 
-        m_WallSide = m_OnRightWallCollision ? -1 : 1;
-        
+        m_WallSide = m_OnRightWallCollision ? -1 : 1;       
+
+
     }
 
     private void OnDrawGizmos()

@@ -6,11 +6,10 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField, Range(1f, 10f)] private float walkSpeed = 4.0f;
-
+    [SerializeField] private float m_SlideSpeed = 5f;
     [SerializeField] private float jumpHeight = 3f;
-    [SerializeField] private float gravityScale = 8.5f;
-
-   
+    
+       
     [SerializeField] private float jumpTimeCounter = 0.35f;
     public float JumpTime { get; set; }
 
@@ -21,15 +20,12 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsMoving { get { return this.m_IsMoving; } }
 
-    private Rigidbody2D m_rb;
-    private Collider2D m_Collider;
-    private SpriteRenderer m_Render;
-    private Animator m_Anim;
-
     private Vector2 m_PlayerDirectionY = Vector2.down;
-       
 
+    private bool m_IsDash = false;
     private bool m_IsJumpStart = false;
+    private bool m_IsGrabWall;
+    private bool m_IsWallSlide;
     public bool IsJumpStart { get { return this.m_IsJumpStart; } }
 
     private bool m_IsOnFloor = false;
@@ -37,6 +33,11 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerCollision m_PlayerCollision;
     private FallModifier m_FallModifier;
+
+    private Rigidbody2D m_rb;
+    private Collider2D m_Collider;
+    private SpriteRenderer m_Render;
+    private Animator m_Anim;
 
     #endregion Variables
 
@@ -63,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
             //m_IsJumping = true;
             Jump();
         }
-
+        
         if (Input.GetKey(KeyCode.Space))
         {
             JumpExtended();
@@ -74,7 +75,44 @@ public class PlayerMovement : MonoBehaviour
             m_IsJumping = false;
         }
 
-        ApplyAnimation();
+        /*error prone*/
+        if(m_PlayerCollision.OnWallCollision && Input.GetButton("Jump"))
+        {
+            m_IsGrabWall = true;
+            m_IsWallSlide = false;
+        }
+
+        if (m_IsGrabWall && !m_IsDash)
+        {
+            m_rb.gravityScale = 0;
+            if (m_Velocity.x > .2f || m_Velocity.x < -.2f)
+                m_rb.velocity = new Vector2(m_rb.velocity.x, 0);
+
+            float speedModifier = m_Velocity.y > 0 ? .5f : 1;
+
+            m_rb.velocity = new Vector2(m_rb.velocity.x, m_Velocity.y * (walkSpeed * speedModifier));
+        }
+        else
+        {
+            m_rb.gravityScale = 3;
+        }
+        /**/
+
+        if (m_PlayerCollision.OnWallCollision && !m_PlayerCollision.OnGroundCollision)
+        {
+            if(m_Velocity.x !=0 && !m_IsGrabWall)
+            {
+                m_IsWallSlide = true;
+                WallSlide();
+            }
+        }
+
+        if(!m_PlayerCollision.OnWallCollision || m_PlayerCollision.OnGroundCollision)
+        {
+            m_IsWallSlide = false;
+        }
+
+        ApplyAnimation();        
     }
 
     private void FixedUpdate()
@@ -137,5 +175,19 @@ public class PlayerMovement : MonoBehaviour
         {
             m_Render.flipX = true;
         }
+    }
+
+    private void WallSlide()
+    {
+        bool _pushWall = false;
+
+        if((m_rb.velocity.x > 0 && m_PlayerCollision.OnRightWallCollision)||(m_rb.velocity.x < 0 && m_PlayerCollision.OnLeftWallCollision))
+        {
+            _pushWall = true;
+        }
+
+        float _push = _pushWall ? 0 : m_rb.velocity.x;
+
+        m_rb.velocity = new Vector2(_push, -m_SlideSpeed);
     }
 }

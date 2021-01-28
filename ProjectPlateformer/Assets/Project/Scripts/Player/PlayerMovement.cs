@@ -76,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         /*error prone*/
-        if(m_PlayerCollision.OnWallCollision && Input.GetButton("Jump"))
+        if(m_PlayerCollision.OnWallCollision && Input.GetButton("Fire3"))
         {
             m_IsGrabWall = true;
             m_IsWallSlide = false;

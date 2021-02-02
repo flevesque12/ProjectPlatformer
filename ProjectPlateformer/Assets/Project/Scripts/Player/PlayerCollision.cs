@@ -10,7 +10,7 @@ public class PlayerCollision : MonoBehaviour
     private Bounds m_Bounds;
 
     private bool m_OnGroundCollision;
-    public bool OnGroundCollision { get { return m_OnGroundCollision; } }
+    public bool OnGroundCollision { get { return m_OnGroundCollision; }}
     //any wall collision left or right
     private bool m_OnWallCollision;
     public bool OnWallCollision { get { return m_OnWallCollision; } }

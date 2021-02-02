@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
+using DigitalRuby.Tween;
 
 public class PlayerMovement : MonoBehaviour
 {
     #region Variables
 
     [Header("Movement")]
-    [SerializeField, Range(1f, 10f)] private float walkSpeed = 4.0f;
-    [SerializeField] private float m_SlideSpeed = 5f;
+    [SerializeField, Range(1f, 10f)] private float m_WalkSpeed = 4.0f;
+    [SerializeField] private float m_SlideSpeed = 2f;
     [SerializeField] private float jumpHeight = 3f;
-    
-       
-    [SerializeField] private float jumpTimeCounter = 0.35f;
+
+
+    private ColorTween colorTween;
+    [SerializeField] private float jumpTimeCounter = 0.2f;
     public float JumpTime { get; set; }
 
     private Vector2 m_Velocity = Vector2.zero;
@@ -26,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
     private bool m_IsJumpStart = false;
     private bool m_IsGrabWall;
     private bool m_IsWallSlide;
-    public bool IsJumpStart { get { return this.m_IsJumpStart; } }
+    public bool IsJumping { get { return this.m_IsJumping; } }
 
     private bool m_IsOnFloor = false;
     public bool IsOnFloor { get { return this.m_IsOnFloor; } set { this.IsOnFloor = value; } }
@@ -56,21 +58,21 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         m_Velocity.x = Input.GetAxis("Horizontal");
-
+        //m_Velocity.y = Input.GetAxis("Vertical");
         FlipSprite();
 
         if (Input.GetButtonDown("Jump") && m_PlayerCollision.OnGroundCollision)
-        {
-            //m_IsJumping = true;
-            Jump();
+        {      
+            m_IsJumping = true;                 
+            Jump();            
         }
         
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetButton("Jump"))
         {
-            JumpExtended();
+            JumpExtended();            
         }
 
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetButtonUp("Jump"))
         {
             m_IsJumping = false;
         }
@@ -90,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
 
             float speedModifier = m_Velocity.y > 0 ? .5f : 1;
 
-            m_rb.velocity = new Vector2(m_rb.velocity.x, m_Velocity.y * (walkSpeed * speedModifier));
+            m_rb.velocity = new Vector2(m_rb.velocity.x, m_Velocity.y * (m_WalkSpeed * speedModifier));
         }
         else
         {
@@ -122,8 +124,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Jump()
-    {
-        m_IsJumping = true;
+    {        
         JumpTime = jumpTimeCounter;
         //m_rb.velocity = Vector2.up * jumpHeight;
         m_rb.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
@@ -144,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move()
     {
-        m_rb.velocity = new Vector2(m_Velocity.x * walkSpeed, m_rb.velocity.y);
+        m_rb.velocity = new Vector2(m_Velocity.x * m_WalkSpeed, m_rb.velocity.y);
     }
 
     private void ApplyAnimation()

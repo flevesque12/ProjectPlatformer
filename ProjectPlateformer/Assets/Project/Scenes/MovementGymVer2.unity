@@ -726,10 +726,15 @@ PrefabInstance:
       propertyPath: m_GravityScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5483507367793419013, guid: 1df8567373ae2084980fbd1e5f9945d4,
+        type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5483507367793419015, guid: 1df8567373ae2084980fbd1e5f9945d4,
         type: 3}
       propertyPath: jumpHeight
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5483507367793419015, guid: 1df8567373ae2084980fbd1e5f9945d4,
         type: 3}
@@ -739,7 +744,12 @@ PrefabInstance:
     - target: {fileID: 5483507367793419015, guid: 1df8567373ae2084980fbd1e5f9945d4,
         type: 3}
       propertyPath: jumpTimeCounter
-      value: 0.15
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5483507367793419015, guid: 1df8567373ae2084980fbd1e5f9945d4,
+        type: 3}
+      propertyPath: m_SlideSpeed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5483507367793419018, guid: 1df8567373ae2084980fbd1e5f9945d4,
         type: 3}

@@ -8,8 +8,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField, Range(1f, 10f)] private float m_WalkSpeed = 4.0f;
     [SerializeField] private float m_SlideSpeed = 2f;
-    [SerializeField] private float jumpHeight = 3f;
-
+    [SerializeField] private float m_JumpHeight = 3f;
+    [SerializeField] private float m_WallJumpLerping = 5f;
 
     private ColorTween colorTween;
     [SerializeField] private float jumpTimeCounter = 0.2f;
@@ -22,12 +22,14 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsMoving { get { return this.m_IsMoving; } }
 
-    private Vector2 m_PlayerDirectionY = Vector2.down;
-
+    
     private bool m_IsDash = false;
     private bool m_IsJumpStart = false;
     private bool m_IsGrabWall;
     private bool m_IsWallSlide;
+    private bool m_IsWallJump;
+    private bool m_IsRunning = false;
+
     public bool IsJumping { get { return this.m_IsJumping; } }
 
     private bool m_IsOnFloor = false;
@@ -35,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerCollision m_PlayerCollision;
     private FallModifier m_FallModifier;
+    private PlayerAnimation m_PlayerAnimation;
 
     private Rigidbody2D m_rb;
     private Collider2D m_Collider;
@@ -52,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
         m_Anim = GetComponent<Animator>();
         m_PlayerCollision = GetComponent<PlayerCollision>();
         m_FallModifier = GetComponent<FallModifier>();
+        m_PlayerAnimation = GetComponent<PlayerAnimation>();
     }
 
     // Update is called once per frame
@@ -69,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
         
         if (Input.GetButton("Jump"))
         {
+            /*May be the sound is repeating because of this JumpExtended*/
             JumpExtended();            
         }
 
@@ -102,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (m_PlayerCollision.OnWallCollision && !m_PlayerCollision.OnGroundCollision)
         {
-            if(m_Velocity.x !=0 && !m_IsGrabWall)
+            if(m_Velocity.x != 0 && !m_IsGrabWall)
             {
                 m_IsWallSlide = true;
                 WallSlide();
@@ -112,9 +117,7 @@ public class PlayerMovement : MonoBehaviour
         if(!m_PlayerCollision.OnWallCollision || m_PlayerCollision.OnGroundCollision)
         {
             m_IsWallSlide = false;
-        }
-
-        ApplyAnimation();        
+        }          
     }
 
     private void FixedUpdate()
@@ -127,14 +130,14 @@ public class PlayerMovement : MonoBehaviour
     {        
         JumpTime = jumpTimeCounter;
         //m_rb.velocity = Vector2.up * jumpHeight;
-        m_rb.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
+        m_rb.AddForce(Vector2.up * m_JumpHeight, ForceMode2D.Impulse);
     }
 
     private void JumpExtended()
     {
         if (JumpTime > 0)
         {
-            m_rb.velocity = Vector2.up * jumpHeight;
+            m_rb.velocity = Vector2.up * m_JumpHeight;
             JumpTime -= Time.deltaTime;
         }
         else
@@ -145,23 +148,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move()
     {
-        m_rb.velocity = new Vector2(m_Velocity.x * m_WalkSpeed, m_rb.velocity.y);
-    }
+        if(m_IsGrabWall) {
+            return;
+        }
 
-    private void ApplyAnimation()
-    {
-        if (m_Velocity.x != 0 && m_PlayerCollision.OnGroundCollision)
-        {
-            m_Anim.SetBool("IsWalking", true);
-            m_IsMoving = true;
-            m_IsOnFloor = true;
-        }
-        else
-        {
-            m_Anim.SetBool("IsWalking", false);
-            m_IsMoving = false;
-            m_IsOnFloor = false;
-        }
+        m_rb.velocity = new Vector2(m_Velocity.x * m_WalkSpeed, m_rb.velocity.y);
+        m_PlayerAnimation.WalkAnimation(m_Velocity.x, m_PlayerCollision.OnGroundCollision);
     }
 
     private void FlipSprite()

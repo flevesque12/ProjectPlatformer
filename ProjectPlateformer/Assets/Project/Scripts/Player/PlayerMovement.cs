@@ -65,28 +65,59 @@ public class PlayerMovement : MonoBehaviour
         //m_Velocity.y = Input.GetAxis("Vertical");
         FlipSprite();
 
-        if (Input.GetButtonDown("Jump") && m_PlayerCollision.OnGroundCollision)
-        {      
-            m_IsJumping = true;                 
-            Jump();            
+        //Wall Slide
+        if (m_PlayerCollision.OnWallCollision && !m_PlayerCollision.OnGroundCollision)
+        {
+            if (m_Velocity.x != 0 && !m_IsGrabWall)
+            {
+                m_IsWallSlide = true;
+                WallSlide();
+            }
+        }
+
+        if (!m_PlayerCollision.OnWallCollision || m_PlayerCollision.OnGroundCollision)
+        {
+            m_IsWallSlide = false;
+        }
+
+        //Jump
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (m_PlayerCollision.OnGroundCollision)
+            {
+                m_IsJumping = true;
+                Jump();
+            }
+
+            if (m_PlayerCollision.OnWallCollision && !m_PlayerCollision.OnGroundCollision)
+            {
+                //wall jump here
+                WallJump();
+            }
         }
         
         if (Input.GetButton("Jump"))
-        {
-            /*May be the sound is repeating because of this JumpExtended*/
+        {            
             JumpExtended();            
         }
+    
 
         if (Input.GetButtonUp("Jump"))
         {
             m_IsJumping = false;
         }
 
-        /*error prone*/
+        //Grab Wall        
         if(m_PlayerCollision.OnWallCollision && Input.GetButton("Fire3"))
         {
             m_IsGrabWall = true;
             m_IsWallSlide = false;
+        }
+
+        //if he on the ground he dont wall jump
+        if (m_PlayerCollision.OnGroundCollision)
+        {
+            m_IsWallJump = false;
         }
 
         if (m_IsGrabWall && !m_IsDash)
@@ -103,21 +134,8 @@ public class PlayerMovement : MonoBehaviour
         {
             m_rb.gravityScale = 3;
         }
-        /**/
-
-        if (m_PlayerCollision.OnWallCollision && !m_PlayerCollision.OnGroundCollision)
-        {
-            if(m_Velocity.x != 0 && !m_IsGrabWall)
-            {
-                m_IsWallSlide = true;
-                WallSlide();
-            }
-        }
-
-        if(!m_PlayerCollision.OnWallCollision || m_PlayerCollision.OnGroundCollision)
-        {
-            m_IsWallSlide = false;
-        }          
+                
+              
     }
 
     private void FixedUpdate()
@@ -131,6 +149,18 @@ public class PlayerMovement : MonoBehaviour
         JumpTime = jumpTimeCounter;
         //m_rb.velocity = Vector2.up * jumpHeight;
         m_rb.AddForce(Vector2.up * m_JumpHeight, ForceMode2D.Impulse);
+        
+    }
+
+    private void WallJump()
+    {
+
+        Vector2 _wallDirection = m_PlayerCollision.OnRightWallCollision ? Vector2.left : Vector2.right;
+
+        Debug.Log(_wallDirection);
+        m_rb.AddForce((Vector2.up / 1.5f + _wallDirection / 1.5f)*m_JumpHeight, ForceMode2D.Impulse);
+        //m_rb.velocity = ;
+        m_IsWallJump = true;
     }
 
     private void JumpExtended()
@@ -152,8 +182,15 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        m_rb.velocity = new Vector2(m_Velocity.x * m_WalkSpeed, m_rb.velocity.y);
-        m_PlayerAnimation.WalkAnimation(m_Velocity.x, m_PlayerCollision.OnGroundCollision);
+        if (!m_IsWallJump)
+        {
+            m_rb.velocity = new Vector2(m_Velocity.x * m_WalkSpeed, m_rb.velocity.y);
+            m_PlayerAnimation.WalkAnimation(m_Velocity.x, m_PlayerCollision.OnGroundCollision);
+        }
+        else
+        {
+            m_rb.velocity = Vector2.Lerp(m_rb.velocity, (new Vector2(m_Velocity.x * m_WalkSpeed, m_rb.velocity.y)), m_WallJumpLerping * Time.deltaTime);
+        }
     }
 
     private void FlipSprite()

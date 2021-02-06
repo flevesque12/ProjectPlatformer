@@ -50,7 +50,7 @@ public class PlayerAudioManager : MonoBehaviour
         {
             
             m_AudioAudioSource.PlayOneShot(clipAntigravitySound,0.5f);
-            
+            //Debug.Log(i++);
         }
         else
         {            

@@ -749,7 +749,12 @@ PrefabInstance:
     - target: {fileID: 5483507367793419015, guid: 1df8567373ae2084980fbd1e5f9945d4,
         type: 3}
       propertyPath: m_SlideSpeed
-      value: 1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5483507367793419015, guid: 1df8567373ae2084980fbd1e5f9945d4,
+        type: 3}
+      propertyPath: m_JumpHeight
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5483507367793419017, guid: 1df8567373ae2084980fbd1e5f9945d4,
         type: 3}

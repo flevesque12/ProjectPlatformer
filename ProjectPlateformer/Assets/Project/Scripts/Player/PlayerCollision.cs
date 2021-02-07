@@ -25,7 +25,7 @@ public class PlayerCollision : MonoBehaviour
     public int WallSide { get { return m_WallSide; } }
 
     [Header("Collision")]
-    [Range(0.25f, 1f)]
+    [Range(0.0f, 1f)]
     [SerializeField]
     private float m_CollisionRadius = 0.25f;
     

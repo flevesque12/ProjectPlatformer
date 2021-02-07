@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using DigitalRuby.Tween;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,8 +9,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField, Range(1f, 10f)] private float m_WalkSpeed = 4.0f;
     [SerializeField] private float m_SlideSpeed = 2f;
-    [SerializeField] private float m_JumpHeight = 3f;
-    [SerializeField] private float m_WallJumpLerping = 5f;
+    [SerializeField] private float m_JumpHeight = 50f;
+    [SerializeField] private float m_WallJumpLerping = 10f;
 
     private ColorTween colorTween;
     [SerializeField] private float jumpTimeCounter = 0.2f;
@@ -29,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     private bool m_IsWallSlide;
     private bool m_IsWallJump;
     private bool m_IsRunning = false;
+    private bool m_CanMove = true;
 
     public bool IsJumping { get { return this.m_IsJumping; } }
 
@@ -62,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         m_Velocity.x = Input.GetAxis("Horizontal");
-        //m_Velocity.y = Input.GetAxis("Vertical");
+        m_Velocity.y = Input.GetAxis("Vertical");
         FlipSprite();
 
         //Wall Slide
@@ -86,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
             if (m_PlayerCollision.OnGroundCollision)
             {
                 m_IsJumping = true;
-                Jump();
+                Jump(Vector2.up);
             }
 
             if (m_PlayerCollision.OnWallCollision && !m_PlayerCollision.OnGroundCollision)
@@ -143,23 +145,35 @@ public class PlayerMovement : MonoBehaviour
         Move();
         m_FallModifier.FallModifierGravity();
     }
+       
 
     private void Jump()
     {        
         JumpTime = jumpTimeCounter;
         //m_rb.velocity = Vector2.up * jumpHeight;
+        m_rb.velocity = new Vector2(m_rb.velocity.x, 0f);
         m_rb.AddForce(Vector2.up * m_JumpHeight, ForceMode2D.Impulse);
         
     }
 
+    private void Jump(Vector2 direction)
+    {
+        JumpTime = jumpTimeCounter;
+        m_rb.velocity = new Vector2(m_rb.velocity.x, 0f);
+        m_rb.velocity += direction * m_JumpHeight;
+    }
+
     private void WallJump()
     {
+        StartCoroutine(DisableMovementCoroutine(0.1f));
 
         Vector2 _wallDirection = m_PlayerCollision.OnRightWallCollision ? Vector2.left : Vector2.right;
 
-        Debug.Log(_wallDirection);
-        m_rb.AddForce((Vector2.up / 1.5f + _wallDirection / 1.5f)*m_JumpHeight, ForceMode2D.Impulse);
-        //m_rb.velocity = ;
+        //Debug.Log(_wallDirection);
+        //m_rb.AddForce(new Vector2(_wallDirection.x,Vector2.up.y * m_JumpHeight), ForceMode2D.Impulse);
+        
+        Jump(Vector2.up + _wallDirection);
+        
         m_IsWallJump = true;
     }
 
@@ -178,6 +192,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move()
     {
+        if (!m_CanMove)
+        {
+            return;
+        }
+
         if(m_IsGrabWall) {
             return;
         }
@@ -209,6 +228,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void WallSlide()
     {
+        
+
         bool _pushWall = false;
 
         if((m_rb.velocity.x > 0 && m_PlayerCollision.OnRightWallCollision)||(m_rb.velocity.x < 0 && m_PlayerCollision.OnLeftWallCollision))
@@ -220,4 +241,12 @@ public class PlayerMovement : MonoBehaviour
 
         m_rb.velocity = new Vector2(_push, -m_SlideSpeed);
     }
+
+    IEnumerator DisableMovementCoroutine(float timer)
+    {
+        m_CanMove = false;
+        yield return new WaitForSeconds(timer);
+        m_CanMove = true;
+    }
+    
 }

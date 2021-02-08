@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using DigitalRuby.Tween;
+﻿using DigitalRuby.Tween;
 using System.Collections;
+using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,8 +8,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField, Range(1f, 10f)] private float m_WalkSpeed = 4.0f;
-    [SerializeField] private float m_SlideSpeed = 2f;
-    [SerializeField] private float m_JumpHeight = 50f;
+
+    [SerializeField] private float m_SlideSpeed = 1f;
+    [SerializeField] private float m_JumpHeight = 12f;
     [SerializeField] private float m_WallJumpLerping = 10f;
 
     private ColorTween colorTween;
@@ -23,7 +24,6 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsMoving { get { return this.m_IsMoving; } }
 
-    
     private bool m_IsDash = false;
     private bool m_IsJumpStart = false;
     private bool m_IsGrabWall;
@@ -97,22 +97,29 @@ public class PlayerMovement : MonoBehaviour
                 WallJump();
             }
         }
-        
-        if (Input.GetButton("Jump"))
-        {            
-            JumpExtended();            
-        }
-    
 
+        //this code cause a bug in the wall jump
+        /*
+        if (Input.GetButton("Jump"))
+        {
+            JumpExtended();
+        }
+        */
         if (Input.GetButtonUp("Jump"))
         {
             m_IsJumping = false;
         }
 
-        //Grab Wall        
-        if(m_PlayerCollision.OnWallCollision && Input.GetButton("Fire3"))
+        //Grab Wall
+        if (m_PlayerCollision.OnWallCollision && Input.GetButton("Fire3"))
         {
             m_IsGrabWall = true;
+            m_IsWallSlide = false;
+        }
+
+        if (Input.GetButtonUp("Fire3") || !m_PlayerCollision.OnWallCollision)
+        {
+            m_IsGrabWall = false;
             m_IsWallSlide = false;
         }
 
@@ -136,8 +143,6 @@ public class PlayerMovement : MonoBehaviour
         {
             m_rb.gravityScale = 3;
         }
-                
-              
     }
 
     private void FixedUpdate()
@@ -145,15 +150,13 @@ public class PlayerMovement : MonoBehaviour
         Move();
         m_FallModifier.FallModifierGravity();
     }
-       
 
     private void Jump()
-    {        
+    {
         JumpTime = jumpTimeCounter;
         //m_rb.velocity = Vector2.up * jumpHeight;
         m_rb.velocity = new Vector2(m_rb.velocity.x, 0f);
         m_rb.AddForce(Vector2.up * m_JumpHeight, ForceMode2D.Impulse);
-        
     }
 
     private void Jump(Vector2 direction)
@@ -171,9 +174,10 @@ public class PlayerMovement : MonoBehaviour
 
         //Debug.Log(_wallDirection);
         //m_rb.AddForce(new Vector2(_wallDirection.x,Vector2.up.y * m_JumpHeight), ForceMode2D.Impulse);
-        
-        Jump(Vector2.up + _wallDirection);
-        
+        Debug.Log(Vector2.up / 1.5f + _wallDirection / 1.5f);
+
+        Jump(Vector2.up / 1.5f + _wallDirection / 1.5f);
+
         m_IsWallJump = true;
     }
 
@@ -197,7 +201,8 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if(m_IsGrabWall) {
+        if (m_IsGrabWall)
+        {
             return;
         }
 
@@ -228,11 +233,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void WallSlide()
     {
-        
-
         bool _pushWall = false;
 
-        if((m_rb.velocity.x > 0 && m_PlayerCollision.OnRightWallCollision)||(m_rb.velocity.x < 0 && m_PlayerCollision.OnLeftWallCollision))
+        if ((m_rb.velocity.x > 0 && m_PlayerCollision.OnRightWallCollision) || (m_rb.velocity.x < 0 && m_PlayerCollision.OnLeftWallCollision))
         {
             _pushWall = true;
         }
@@ -242,11 +245,10 @@ public class PlayerMovement : MonoBehaviour
         m_rb.velocity = new Vector2(_push, -m_SlideSpeed);
     }
 
-    IEnumerator DisableMovementCoroutine(float timer)
+    private IEnumerator DisableMovementCoroutine(float timer)
     {
         m_CanMove = false;
         yield return new WaitForSeconds(timer);
         m_CanMove = true;
     }
-    
 }

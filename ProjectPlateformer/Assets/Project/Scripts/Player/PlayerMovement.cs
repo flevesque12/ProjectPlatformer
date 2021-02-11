@@ -66,6 +66,8 @@ public class PlayerMovement : MonoBehaviour
         m_Velocity.x = Input.GetAxis("Horizontal");
         m_Velocity.y = Input.GetAxis("Vertical");
         FlipSprite();
+        
+
 
         //Wall Slide
         if (m_PlayerCollision.OnWallCollision && !m_PlayerCollision.OnGroundCollision)
@@ -81,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
         {
             m_IsWallSlide = false;
         }
-
+        
         //Jump
         if (Input.GetButtonDown("Jump"))
         {
@@ -102,9 +104,10 @@ public class PlayerMovement : MonoBehaviour
         /*
         if (Input.GetButton("Jump"))
         {
+            if(!m_PlayerCollision.OnWallCollision && !m_PlayerCollision.OnGroundCollision)
             JumpExtended();
-        }
-        */
+        }*/
+        
         if (Input.GetButtonUp("Jump"))
         {
             m_IsJumping = false;
@@ -148,7 +151,12 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
-        m_FallModifier.FallModifierGravity();
+
+        if (m_PlayerCollision.OnGroundCollision)
+        {
+            m_IsWallJump = false;
+            m_FallModifier.FallModifierGravity();
+        }
     }
 
     private void Jump()
@@ -164,6 +172,7 @@ public class PlayerMovement : MonoBehaviour
         JumpTime = jumpTimeCounter;
         m_rb.velocity = new Vector2(m_rb.velocity.x, 0f);
         m_rb.velocity += direction * m_JumpHeight;
+        //m_rb.AddForce(direction * m_JumpHeight,ForceMode2D.Impulse);
     }
 
     private void WallJump()
@@ -233,6 +242,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void WallSlide()
     {
+        if (!m_CanMove)
+        {
+            return;
+        }
+
         bool _pushWall = false;
 
         if ((m_rb.velocity.x > 0 && m_PlayerCollision.OnRightWallCollision) || (m_rb.velocity.x < 0 && m_PlayerCollision.OnLeftWallCollision))

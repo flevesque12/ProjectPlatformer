@@ -102,9 +102,9 @@ public class PlayerMovement : MonoBehaviour
 
         //this code cause a bug in the wall jump
         /*
-        if (Input.GetButton("Jump"))
+        if (Input.GetButton("Jump") && m_IsJumping)
         {
-            if(!m_PlayerCollision.OnWallCollision && !m_PlayerCollision.OnGroundCollision)
+            if(!m_PlayerCollision.OnWallCollision)
             JumpExtended();
         }*/
         
@@ -152,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Move();
 
-        if (m_PlayerCollision.OnGroundCollision)
+        if (!m_PlayerCollision.OnGroundCollision)
         {
             m_IsWallJump = false;
             m_FallModifier.FallModifierGravity();
@@ -183,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
 
         //Debug.Log(_wallDirection);
         //m_rb.AddForce(new Vector2(_wallDirection.x,Vector2.up.y * m_JumpHeight), ForceMode2D.Impulse);
-        Debug.Log(Vector2.up / 1.5f + _wallDirection / 1.5f);
+        
 
         Jump(Vector2.up / 1.5f + _wallDirection / 1.5f);
 

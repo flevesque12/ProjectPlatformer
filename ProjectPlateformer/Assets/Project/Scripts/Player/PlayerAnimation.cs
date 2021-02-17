@@ -19,16 +19,9 @@ public class PlayerAnimation : MonoBehaviour
 
     }
 
-    public void WalkAnimation(float velocity, bool isTouchingGround)
+    public void WalkAnimation(float x)
     {
-        if(velocity != 0 && isTouchingGround)
-        {
-            m_Animator.SetBool("IsWalking", true);
-        }
-        else
-        {
-            m_Animator.SetBool("IsWalking", false);
-        }
+        m_Animator.SetFloat("HorizontalAxis", x);
     }
 
     public void RunAnimation(bool isTouchingGround)

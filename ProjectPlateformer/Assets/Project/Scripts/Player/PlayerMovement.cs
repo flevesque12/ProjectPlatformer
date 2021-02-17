@@ -66,8 +66,8 @@ public class PlayerMovement : MonoBehaviour
         m_Velocity.x = Input.GetAxis("Horizontal");
         m_Velocity.y = Input.GetAxis("Vertical");
         FlipSprite();
-        
-
+        Move();
+        m_PlayerAnimation.WalkAnimation(m_Velocity.x);
 
         //Wall Slide
         if (m_PlayerCollision.OnWallCollision && !m_PlayerCollision.OnGroundCollision)
@@ -87,6 +87,7 @@ public class PlayerMovement : MonoBehaviour
         //Jump
         if (Input.GetButtonDown("Jump"))
         {
+            m_Anim.SetTrigger("jump");
             if (m_PlayerCollision.OnGroundCollision)
             {
                 m_IsJumping = true;
@@ -150,7 +151,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
+        
 
         if (!m_PlayerCollision.OnGroundCollision)
         {
@@ -218,7 +219,7 @@ public class PlayerMovement : MonoBehaviour
         if (!m_IsWallJump)
         {
             m_rb.velocity = new Vector2(m_Velocity.x * m_WalkSpeed, m_rb.velocity.y);
-            m_PlayerAnimation.WalkAnimation(m_Velocity.x, m_PlayerCollision.OnGroundCollision);
+            
         }
         else
         {

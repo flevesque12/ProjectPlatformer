@@ -36,7 +36,7 @@ public class PlayerCollision : MonoBehaviour
     void Start()
     {
         m_Bounds = GetComponent<Collider2D>().bounds;
-        m_BottomOffset.y = -m_Bounds.extents.y;
+        m_BottomOffset.y = -m_Bounds.extents.y-m_CollisionRadius;
         m_LeftOffset.x = -m_Bounds.extents.x;
         m_RightOffset.x = m_Bounds.extents.x;
     }

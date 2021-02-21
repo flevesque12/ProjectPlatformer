@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerCollision))]
 public class PlayerCollision : MonoBehaviour
 {
     [SerializeField]

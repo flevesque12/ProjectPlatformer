@@ -66,8 +66,11 @@ public class PlayerMovement : MonoBehaviour
         m_Velocity.x = Input.GetAxis("Horizontal");
         m_Velocity.y = Input.GetAxis("Vertical");
         FlipSprite();
-        Move();
+
         m_PlayerAnimation.WalkAnimation(m_Velocity.x);
+        
+        Move();
+        
 
         //Wall Slide
         if (m_PlayerCollision.OnWallCollision && !m_PlayerCollision.OnGroundCollision)

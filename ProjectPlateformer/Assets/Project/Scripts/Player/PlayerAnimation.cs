@@ -26,7 +26,8 @@ public class PlayerAnimation : MonoBehaviour
 
     public void WalkAnimation(float x)
     {
-        m_Animator.SetFloat("HorizontalAxis", x);
+        
+        m_Animator.SetFloat("speed", Mathf.Abs(x));
     }
 
     public void RunAnimation(bool isTouchingGround)

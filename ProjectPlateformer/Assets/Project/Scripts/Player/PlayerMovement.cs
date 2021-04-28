@@ -66,9 +66,15 @@ public class PlayerMovement : MonoBehaviour
         m_Velocity.x = Input.GetAxis("Horizontal");
         m_Velocity.y = Input.GetAxis("Vertical");
         FlipSprite();
+        if (m_PlayerCollision.OnGroundCollision && !m_PlayerCollision.OnWallCollision && m_Velocity.x != 0)
+        {
+            m_PlayerAnimation.WalkAnimation(m_Velocity.x);
+        }
+        else
+        {
+            m_PlayerAnimation.WalkAnimation(Vector2.zero.x);
+        }
 
-        m_PlayerAnimation.WalkAnimation(m_Velocity.x);
-        
         Move();
         
 
@@ -90,9 +96,11 @@ public class PlayerMovement : MonoBehaviour
         //Jump
         if (Input.GetButtonDown("Jump"))
         {
-            m_Anim.SetTrigger("jump");
+            //m_Anim.SetTrigger("jump");
+            
             if (m_PlayerCollision.OnGroundCollision)
             {
+                m_Anim.SetBool("IsJumping", true);
                 m_IsJumping = true;
                 Jump(Vector2.up);
             }
@@ -113,8 +121,10 @@ public class PlayerMovement : MonoBehaviour
         }*/
         
         if (Input.GetButtonUp("Jump"))
-        {
+        { 
+            m_Anim.SetBool("IsJumping", false);
             m_IsJumping = false;
+           
         }
 
         //Grab Wall

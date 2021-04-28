@@ -8,11 +8,11 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField, Range(1f, 10f)] private float m_WalkSpeed = 4.0f;
-
+    [SerializeField] private float m_DashSpeed = 1f;
     [SerializeField] private float m_SlideSpeed = 1f;
     [SerializeField] private float m_JumpHeight = 12f;
     [SerializeField] private float m_WallJumpLerping = 10f;
-
+    [SerializeField] private int m_Side = 1;
     private ColorTween colorTween;
     [SerializeField] private float jumpTimeCounter = 0.2f;
     public float JumpTime { get; set; }
@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     private Collider2D m_Collider;
     private SpriteRenderer m_Render;
     private Animator m_Anim;
+    private SpriteRenderer m_SprRenderer;
 
     #endregion Variables
 
@@ -58,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
         m_PlayerCollision = GetComponent<PlayerCollision>();
         m_FallModifier = GetComponent<FallModifier>();
         m_PlayerAnimation = GetComponent<PlayerAnimation>();
+        m_SprRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -65,7 +67,10 @@ public class PlayerMovement : MonoBehaviour
     {
         m_Velocity.x = Input.GetAxis("Horizontal");
         m_Velocity.y = Input.GetAxis("Vertical");
+
+        //to change
         FlipSprite();
+
         if (m_PlayerCollision.OnGroundCollision && !m_PlayerCollision.OnWallCollision && m_Velocity.x != 0)
         {
             m_PlayerAnimation.WalkAnimation(m_Velocity.x);
@@ -76,7 +81,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Move();
-        
 
         //Wall Slide
         if (m_PlayerCollision.OnWallCollision && !m_PlayerCollision.OnGroundCollision)
@@ -92,12 +96,12 @@ public class PlayerMovement : MonoBehaviour
         {
             m_IsWallSlide = false;
         }
-        
+
         //Jump
         if (Input.GetButtonDown("Jump"))
         {
-            //m_Anim.SetTrigger("jump");
             
+
             if (m_PlayerCollision.OnGroundCollision)
             {
                 m_Anim.SetBool("IsJumping", true);
@@ -119,22 +123,26 @@ public class PlayerMovement : MonoBehaviour
             if(!m_PlayerCollision.OnWallCollision)
             JumpExtended();
         }*/
-        
+
         if (Input.GetButtonUp("Jump"))
-        { 
+        {
             m_Anim.SetBool("IsJumping", false);
             m_IsJumping = false;
-           
         }
 
         //Grab Wall
-        if (m_PlayerCollision.OnWallCollision && Input.GetButton("Fire3"))
+        if (m_PlayerCollision.OnWallCollision && Input.GetButton("Fire3") && m_CanMove)
         {
+            if(m_Side != m_PlayerCollision.WallSide)
+            {
+                FlipSprite(m_Side * -1);
+            }
+
             m_IsGrabWall = true;
             m_IsWallSlide = false;
         }
 
-        if (Input.GetButtonUp("Fire3") || !m_PlayerCollision.OnWallCollision)
+        if (Input.GetButtonUp("Fire3") || !m_PlayerCollision.OnWallCollision && !m_CanMove)
         {
             m_IsGrabWall = false;
             m_IsWallSlide = false;
@@ -160,12 +168,24 @@ public class PlayerMovement : MonoBehaviour
         {
             m_rb.gravityScale = 3;
         }
+
+        /*
+        //that maybe not necessary(have to change)
+        if (m_Velocity.x > 0)
+        {
+            m_Side = 1;
+            FlipSprite(m_Side);
+        }
+
+        if(m_Velocity.x < 0)
+        {
+            m_Side = -1;
+            FlipSprite(m_Side);
+        }*/
     }
 
     private void FixedUpdate()
     {
-        
-
         if (!m_PlayerCollision.OnGroundCollision)
         {
             m_IsWallJump = false;
@@ -197,7 +217,6 @@ public class PlayerMovement : MonoBehaviour
 
         //Debug.Log(_wallDirection);
         //m_rb.AddForce(new Vector2(_wallDirection.x,Vector2.up.y * m_JumpHeight), ForceMode2D.Impulse);
-        
 
         Jump(Vector2.up / 1.5f + _wallDirection / 1.5f);
 
@@ -232,12 +251,30 @@ public class PlayerMovement : MonoBehaviour
         if (!m_IsWallJump)
         {
             m_rb.velocity = new Vector2(m_Velocity.x * m_WalkSpeed, m_rb.velocity.y);
-            
         }
         else
         {
             m_rb.velocity = Vector2.Lerp(m_rb.velocity, (new Vector2(m_Velocity.x * m_WalkSpeed, m_rb.velocity.y)), m_WallJumpLerping * Time.deltaTime);
         }
+    }
+
+    private void FlipSprite(int side)
+    {
+        if (m_IsGrabWall || m_IsWallSlide)
+        {
+            if (side == -1 && m_SprRenderer.flipX)
+            {
+                return;
+            }
+
+            if (side == 1 && !m_SprRenderer.flipX)
+            {
+                return;
+            }
+        }
+
+        bool flipState = (side == 1) ? false : true;
+        m_SprRenderer.flipX = flipState;
     }
 
     private void FlipSprite()

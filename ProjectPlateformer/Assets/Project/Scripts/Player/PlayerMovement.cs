@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(1f, 10f)] private float m_WalkSpeed = 4.0f;
     [SerializeField] private float m_DashSpeed = 1f;
     [SerializeField] private float m_SlideSpeed = 1f;
-    [SerializeField] private float m_JumpHeight = 12f;
+    [SerializeField, Range(0f, 10f)] private float m_JumpHeight = 10f;
     [SerializeField] private float m_WallJumpLerping = 10f;
     [SerializeField] private int m_Side = 1;
     private ColorTween colorTween;
@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public float JumpTime { get; set; }
 
     private Vector2 m_Velocity = Vector2.zero;
+    private Vector3 testVelocity;
 
     private bool m_IsMoving = false;
     private bool m_IsJumping = false;
@@ -67,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
     {
         m_Velocity.x = Input.GetAxis("Horizontal");
         m_Velocity.y = Input.GetAxis("Vertical");
+        m_Velocity = Vector2.ClampMagnitude(m_Velocity, 1f);
 
         //to change
         FlipSprite();
@@ -99,8 +101,7 @@ public class PlayerMovement : MonoBehaviour
 
         //Jump
         if (Input.GetButtonDown("Jump"))
-        {
-            
+        {           
 
             if (m_PlayerCollision.OnGroundCollision)
             {
@@ -124,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
             JumpExtended();
         }*/
 
-        if (Input.GetButtonUp("Jump"))
+        if (Input.GetButtonUp("Jump") && m_PlayerCollision.OnGroundCollision)
         {
             m_Anim.SetBool("IsJumping", false);
             m_IsJumping = false;
@@ -204,6 +205,7 @@ public class PlayerMovement : MonoBehaviour
     private void Jump(Vector2 direction)
     {
         JumpTime = jumpTimeCounter;
+        
         m_rb.velocity = new Vector2(m_rb.velocity.x, 0f);
         m_rb.velocity += direction * m_JumpHeight;
         //m_rb.AddForce(direction * m_JumpHeight,ForceMode2D.Impulse);

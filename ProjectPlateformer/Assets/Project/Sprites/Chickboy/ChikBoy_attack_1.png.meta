@@ -17,6 +17,21 @@ TextureImporter:
   - first:
       213: -53954532931073981
     second: ChikBoy_attack_1_4
+  - first:
+      213: 2856745396711344253
+    second: ChikBoy_attack_1_0
+  - first:
+      213: 137744740588441727
+    second: ChikBoy_attack_1_1
+  - first:
+      213: 589119062793017111
+    second: ChikBoy_attack_1_2
+  - first:
+      213: -2447768246242329515
+    second: ChikBoy_attack_1_3
+  - first:
+      213: 5821107452195594434
+    second: ChikBoy_attack_1_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -60,7 +75,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 20
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -129,10 +144,10 @@ TextureImporter:
       name: ChikBoy_attack_1_0
       rect:
         serializedVersion: 2
-        x: 9
+        x: 0
         y: 128
-        width: 14
-        height: 31
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,8 +155,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7dde0d646c89369b0800000000000000
-      internalID: -5088055176639484457
+      spriteID: d7846b87dc235a720800000000000000
+      internalID: 2856745396711344253
       vertices: []
       indices: 
       edges: []
@@ -150,10 +165,10 @@ TextureImporter:
       name: ChikBoy_attack_1_1
       rect:
         serializedVersion: 2
-        x: 9
+        x: 0
         y: 96
-        width: 14
-        height: 30
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -161,8 +176,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 043d8f087af45bd60800000000000000
-      internalID: 7905312301760697152
+      spriteID: f70d37c9c1e59e100800000000000000
+      internalID: 137744740588441727
       vertices: []
       indices: 
       edges: []
@@ -171,10 +186,10 @@ TextureImporter:
       name: ChikBoy_attack_1_2
       rect:
         serializedVersion: 2
-        x: 9
+        x: 0
         y: 64
-        width: 20
-        height: 29
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -182,8 +197,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d136c7a6155bf3e50800000000000000
-      internalID: 6791346124381512477
+      spriteID: 71750349aa8fc2800800000000000000
+      internalID: 589119062793017111
       vertices: []
       indices: 
       edges: []
@@ -192,10 +207,10 @@ TextureImporter:
       name: ChikBoy_attack_1_3
       rect:
         serializedVersion: 2
-        x: 9
+        x: 0
         y: 32
-        width: 19
-        height: 29
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,8 +218,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 788d4239e383f1d90800000000000000
-      internalID: -7124914244069042041
+      spriteID: 55cbe36bfb7c70ed0800000000000000
+      internalID: -2447768246242329515
       vertices: []
       indices: 
       edges: []
@@ -213,10 +228,10 @@ TextureImporter:
       name: ChikBoy_attack_1_4
       rect:
         serializedVersion: 2
-        x: 9
+        x: 0
         y: 0
-        width: 18
-        height: 30
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -224,8 +239,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3480f9e53a0504ff0800000000000000
-      internalID: -53954532931073981
+      spriteID: 2c06f7fd26ab8c050800000000000000
+      internalID: 5821107452195594434
       vertices: []
       indices: 
       edges: []

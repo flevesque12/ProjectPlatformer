@@ -14,6 +14,18 @@ TextureImporter:
   - first:
       213: -3620413624334201765
     second: ChikBoy_crouch_idle_3
+  - first:
+      213: -5804907621890978230
+    second: ChikBoy_crouch_idle_0
+  - first:
+      213: -7042632702701010492
+    second: ChikBoy_crouch_idle_1
+  - first:
+      213: -617807011452091199
+    second: ChikBoy_crouch_idle_2
+  - first:
+      213: 455142296636836905
+    second: ChikBoy_crouch_idle_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -57,7 +69,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 20
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -126,19 +138,19 @@ TextureImporter:
       name: ChikBoy_crouch_idle_0
       rect:
         serializedVersion: 2
-        x: 9
+        x: 0
         y: 96
-        width: 15
-        height: 25
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d81a8832ac862e60800000000000000
-      internalID: 7937186021648242905
+      spriteID: a4e0b3b0643d07fa0800000000000000
+      internalID: -5804907621890978230
       vertices: []
       indices: 
       edges: []
@@ -147,19 +159,19 @@ TextureImporter:
       name: ChikBoy_crouch_idle_1
       rect:
         serializedVersion: 2
-        x: 9
+        x: 0
         y: 64
-        width: 15
-        height: 25
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 008c411b09b16a780800000000000000
-      internalID: -8672213724195141632
+      spriteID: 4c105ffceda834e90800000000000000
+      internalID: -7042632702701010492
       vertices: []
       indices: 
       edges: []
@@ -168,19 +180,19 @@ TextureImporter:
       name: ChikBoy_crouch_idle_2
       rect:
         serializedVersion: 2
-        x: 8
+        x: 0
         y: 32
-        width: 17
-        height: 25
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5b620548da84b6860800000000000000
-      internalID: 7524187512538932917
+      spriteID: 1c407aedbcb1d67f0800000000000000
+      internalID: -617807011452091199
       vertices: []
       indices: 
       edges: []
@@ -189,19 +201,19 @@ TextureImporter:
       name: ChikBoy_crouch_idle_3
       rect:
         serializedVersion: 2
-        x: 9
+        x: 0
         y: 0
-        width: 15
-        height: 25
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b5c439d8df4b1cdc0800000000000000
-      internalID: -3620413624334201765
+      spriteID: 92c4b41e18df05600800000000000000
+      internalID: 455142296636836905
       vertices: []
       indices: 
       edges: []

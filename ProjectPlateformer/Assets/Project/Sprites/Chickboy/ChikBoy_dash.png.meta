@@ -23,6 +23,27 @@ TextureImporter:
   - first:
       213: -2096917746318102029
     second: ChikBoy_dash_6
+  - first:
+      213: -5276951734477518005
+    second: ChikBoy_dash_0
+  - first:
+      213: -2594967410424105919
+    second: ChikBoy_dash_1
+  - first:
+      213: -5368902662323969234
+    second: ChikBoy_dash_2
+  - first:
+      213: 1816764294666969823
+    second: ChikBoy_dash_3
+  - first:
+      213: -4386776409228219206
+    second: ChikBoy_dash_4
+  - first:
+      213: -8394542616524018994
+    second: ChikBoy_dash_5
+  - first:
+      213: 2609141525975176751
+    second: ChikBoy_dash_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -66,7 +87,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 20
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -135,19 +156,19 @@ TextureImporter:
       name: ChikBoy_dash_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 193
-        width: 18
-        height: 31
+        x: 0
+        y: 192
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 24d8797d455540de0800000000000000
-      internalID: -1367874563931140798
+      spriteID: b4b06912b5084c6b0800000000000000
+      internalID: -5276951734477518005
       vertices: []
       indices: 
       edges: []
@@ -156,19 +177,19 @@ TextureImporter:
       name: ChikBoy_dash_1
       rect:
         serializedVersion: 2
-        x: 7
-        y: 161
-        width: 20
-        height: 31
+        x: 0
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b921994861bb60c30800000000000000
-      internalID: 4325350197524239003
+      spriteID: 144b4f193e2dcfbd0800000000000000
+      internalID: -2594967410424105919
       vertices: []
       indices: 
       edges: []
@@ -177,19 +198,19 @@ TextureImporter:
       name: ChikBoy_dash_2
       rect:
         serializedVersion: 2
-        x: 4
-        y: 129
-        width: 23
-        height: 31
+        x: 0
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 291e1bc2891a10b20800000000000000
-      internalID: 3098935693564567954
+      spriteID: e23e78a6973dd75b0800000000000000
+      internalID: -5368902662323969234
       vertices: []
       indices: 
       edges: []
@@ -198,19 +219,19 @@ TextureImporter:
       name: ChikBoy_dash_3
       rect:
         serializedVersion: 2
-        x: 9
+        x: 0
         y: 96
-        width: 14
-        height: 31
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f17a46620ab0ef140800000000000000
-      internalID: 4755251039016625951
+      spriteID: fd2ec381081763910800000000000000
+      internalID: 1816764294666969823
       vertices: []
       indices: 
       edges: []
@@ -219,19 +240,19 @@ TextureImporter:
       name: ChikBoy_dash_4
       rect:
         serializedVersion: 2
-        x: 11
+        x: 0
         y: 64
-        width: 14
-        height: 31
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 62efe6d022054f0a0800000000000000
-      internalID: -6848761026139193818
+      spriteID: abc63e2191a0f13c0800000000000000
+      internalID: -4386776409228219206
       vertices: []
       indices: 
       edges: []
@@ -240,19 +261,19 @@ TextureImporter:
       name: ChikBoy_dash_5
       rect:
         serializedVersion: 2
-        x: 14
+        x: 0
         y: 32
-        width: 14
-        height: 31
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0f04c8dc537fd4530800000000000000
-      internalID: 3840997867670749424
+      spriteID: eca253a67f7908b80800000000000000
+      internalID: -8394542616524018994
       vertices: []
       indices: 
       edges: []
@@ -261,19 +282,19 @@ TextureImporter:
       name: ChikBoy_dash_6
       rect:
         serializedVersion: 2
-        x: 9
+        x: 0
         y: 0
-        width: 14
-        height: 31
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3f13f7f6b6046e2e0800000000000000
-      internalID: -2096917746318102029
+      spriteID: f269870e468853420800000000000000
+      internalID: 2609141525975176751
       vertices: []
       indices: 
       edges: []

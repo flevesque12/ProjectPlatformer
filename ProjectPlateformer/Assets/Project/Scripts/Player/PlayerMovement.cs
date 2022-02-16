@@ -13,6 +13,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(0f, 10f)] private float m_JumpHeight = 10f;
     [SerializeField] private float m_WallJumpLerping = 10f;
     [SerializeField] private int m_Side = 1;
+    [SerializeField] private float m_DashDistance = 100.0f;
+
+    private float xRaw;
+    private float yRaw;
+
     private ColorTween colorTween;
     [SerializeField] private float jumpTimeCounter = 0.2f;
     public float JumpTime { get; set; }
@@ -26,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
     public bool IsMoving { get { return this.m_IsMoving; } }
 
     private bool m_IsDash = false;
+    private bool m_HasDashed = false;
+
     private bool m_IsJumpStart = false;
     private bool m_IsGrabWall;
     private bool m_IsWallSlide;
@@ -68,8 +75,10 @@ public class PlayerMovement : MonoBehaviour
     {
         m_Velocity.x = Input.GetAxis("Horizontal");
         m_Velocity.y = Input.GetAxis("Vertical");
+        xRaw = Input.GetAxisRaw("Horizontal");
+        yRaw = Input.GetAxisRaw("Vertical");
         m_Velocity = Vector2.ClampMagnitude(m_Velocity, 1f);
-
+        
         //to change
         FlipSprite();
 
@@ -131,6 +140,18 @@ public class PlayerMovement : MonoBehaviour
             m_IsJumping = false;
         }
 
+        //Add dash here
+        if(Input.GetButtonDown("Fire1"))
+        {
+            
+            if (xRaw != 0 || yRaw != 0)
+            {
+                Debug.Log("handle dash");
+                HandleDash(xRaw, yRaw);
+            }
+        }
+
+
         //Grab Wall
         if (m_PlayerCollision.OnWallCollision && Input.GetButton("Fire3") && m_CanMove)
         {
@@ -153,6 +174,7 @@ public class PlayerMovement : MonoBehaviour
         if (m_PlayerCollision.OnGroundCollision)
         {
             m_IsWallJump = false;
+            //m_FallModifier.enabled = true;
         }
 
         if (m_IsGrabWall && !m_IsDash)
@@ -252,13 +274,29 @@ public class PlayerMovement : MonoBehaviour
 
         if (!m_IsWallJump)
         {
+            //only move
             m_rb.velocity = new Vector2(m_Velocity.x * m_WalkSpeed, m_rb.velocity.y);
         }
         else
         {
+            //when he slide the wall
             m_rb.velocity = Vector2.Lerp(m_rb.velocity, (new Vector2(m_Velocity.x * m_WalkSpeed, m_rb.velocity.y)), m_WallJumpLerping * Time.deltaTime);
         }
     }
+
+    public void HandleDash(float x, float y)
+    {
+        m_HasDashed = true;
+
+        m_rb.velocity = Vector2.zero;
+
+        Vector2 dir = new Vector2(x, y);
+
+        m_rb.velocity += dir.normalized * m_DashDistance;
+        //m_rb.AddForce(dir.normalized * m_DashDistance);
+        //m_FallModifier.enabled = false;
+    }
+
 
     private void FlipSprite(int side)
     {

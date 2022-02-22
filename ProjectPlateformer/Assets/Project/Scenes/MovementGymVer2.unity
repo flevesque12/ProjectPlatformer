@@ -1786,7 +1786,7 @@ PrefabInstance:
     - target: {fileID: 5483507367793419013, guid: 1df8567373ae2084980fbd1e5f9945d4,
         type: 3}
       propertyPath: m_Mass
-      value: 0.5692668
+      value: 0.42617586
       objectReference: {fileID: 0}
     - target: {fileID: 5483507367793419014, guid: 1df8567373ae2084980fbd1e5f9945d4,
         type: 3}
@@ -1801,7 +1801,7 @@ PrefabInstance:
     - target: {fileID: 5483507367793419015, guid: 1df8567373ae2084980fbd1e5f9945d4,
         type: 3}
       propertyPath: m_DashDistance
-      value: 50
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 5483507367793419018, guid: 1df8567373ae2084980fbd1e5f9945d4,
         type: 3}

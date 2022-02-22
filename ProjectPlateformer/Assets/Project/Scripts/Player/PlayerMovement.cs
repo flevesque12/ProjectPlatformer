@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(0f, 10f)] private float m_JumpHeight = 10f;
     [SerializeField] private float m_WallJumpLerping = 10f;
     [SerializeField] private int m_Side = 1;
-    [SerializeField] private float m_DashDistance = 100.0f;
+    [SerializeField] private float m_DashDistance = 40.0f;
 
     private float xRaw;
     private float yRaw;
@@ -22,13 +22,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpTimeCounter = 0.2f;
     public float JumpTime { get; set; }
 
-    private Vector2 m_Velocity = Vector2.zero;
+    private Vector2 m_Direction = Vector2.zero;
     private Vector3 testVelocity;
 
     private bool m_IsMoving = false;
     private bool m_IsJumping = false;
 
     public bool IsMoving { get { return this.m_IsMoving; } }
+
 
     private bool m_IsDash = false;
     private bool m_HasDashed = false;
@@ -73,18 +74,18 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        m_Velocity.x = Input.GetAxis("Horizontal");
-        m_Velocity.y = Input.GetAxis("Vertical");
+        m_Direction.x = Input.GetAxis("Horizontal");
+        m_Direction.y = Input.GetAxis("Vertical");
         xRaw = Input.GetAxisRaw("Horizontal");
         yRaw = Input.GetAxisRaw("Vertical");
-        m_Velocity = Vector2.ClampMagnitude(m_Velocity, 1f);
+        m_Direction = Vector2.ClampMagnitude(m_Direction, 1f);
         
         //to change
         FlipSprite();
 
-        if (m_PlayerCollision.OnGroundCollision && !m_PlayerCollision.OnWallCollision && m_Velocity.x != 0)
+        if (m_PlayerCollision.OnGroundCollision && !m_PlayerCollision.OnWallCollision && m_Direction.x != 0)
         {
-            m_PlayerAnimation.WalkAnimation(m_Velocity.x);
+            m_PlayerAnimation.WalkAnimation(m_Direction.x);
         }
         else
         {
@@ -96,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
         //Wall Slide
         if (m_PlayerCollision.OnWallCollision && !m_PlayerCollision.OnGroundCollision)
         {
-            if (m_Velocity.x != 0 && !m_IsGrabWall)
+            if (m_Direction.x != 0 && !m_IsGrabWall)
             {
                 m_IsWallSlide = true;
                 WallSlide();
@@ -151,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-
+        
         //Grab Wall
         if (m_PlayerCollision.OnWallCollision && Input.GetButton("Fire3") && m_CanMove)
         {
@@ -180,12 +181,12 @@ public class PlayerMovement : MonoBehaviour
         if (m_IsGrabWall && !m_IsDash)
         {
             m_rb.gravityScale = 0;
-            if (m_Velocity.x > .2f || m_Velocity.x < -.2f)
+            if (m_Direction.x > .2f || m_Direction.x < -.2f)
                 m_rb.velocity = new Vector2(m_rb.velocity.x, 0);
 
-            float speedModifier = m_Velocity.y > 0 ? .5f : 1;
+            float speedModifier = m_Direction.y > 0 ? .5f : 1;
 
-            m_rb.velocity = new Vector2(m_rb.velocity.x, m_Velocity.y * (m_WalkSpeed * speedModifier));
+            m_rb.velocity = new Vector2(m_rb.velocity.x, m_Direction.y * (m_WalkSpeed * speedModifier));
         }
         else
         {
@@ -275,12 +276,12 @@ public class PlayerMovement : MonoBehaviour
         if (!m_IsWallJump)
         {
             //only move
-            m_rb.velocity = new Vector2(m_Velocity.x * m_WalkSpeed, m_rb.velocity.y);
+            m_rb.velocity = new Vector2(m_Direction.x * m_WalkSpeed, m_rb.velocity.y);
         }
         else
         {
             //when he slide the wall
-            m_rb.velocity = Vector2.Lerp(m_rb.velocity, (new Vector2(m_Velocity.x * m_WalkSpeed, m_rb.velocity.y)), m_WallJumpLerping * Time.deltaTime);
+            m_rb.velocity = Vector2.Lerp(m_rb.velocity, (new Vector2(m_Direction.x * m_WalkSpeed, m_rb.velocity.y)), m_WallJumpLerping * Time.deltaTime);
         }
     }
 
@@ -293,6 +294,8 @@ public class PlayerMovement : MonoBehaviour
         Vector2 dir = new Vector2(x, y);
 
         m_rb.velocity += dir.normalized * m_DashDistance;
+
+        
         //m_rb.AddForce(dir.normalized * m_DashDistance);
         //m_FallModifier.enabled = false;
     }

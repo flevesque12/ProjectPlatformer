@@ -25,7 +25,7 @@ public class FallModifier : MonoBehaviour
         {
             m_rb.velocity += Vector2.up * Physics2D.gravity.y * (m_fallModifier - 1) * Time.deltaTime;
         }
-        else if(m_rb.velocity.y>0 && !Input.GetButton("Jump"))
+        else if(m_rb.velocity.y > 0 && !Input.GetButton("Jump"))
         {
             m_rb.velocity += Vector2.up * Physics2D.gravity.y * (m_LowJumpModifier - 1) * Time.deltaTime;
         }

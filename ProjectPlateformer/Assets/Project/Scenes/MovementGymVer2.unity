@@ -1788,6 +1788,11 @@ PrefabInstance:
       propertyPath: m_Mass
       value: 0.42617586
       objectReference: {fileID: 0}
+    - target: {fileID: 5483507367793419013, guid: 1df8567373ae2084980fbd1e5f9945d4,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5483507367793419014, guid: 1df8567373ae2084980fbd1e5f9945d4,
         type: 3}
       propertyPath: m_Controller

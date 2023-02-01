@@ -145,11 +145,11 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetButtonDown("Fire1"))
         {
             
-            if (xRaw != 0 || yRaw != 0)
-            {
+           // if (xRaw != 0 || yRaw != 0)
+            //{
                 Debug.Log("handle dash");
                 HandleDash(xRaw, yRaw);
-            }
+            //}
         }
 
         
@@ -291,10 +291,10 @@ public class PlayerMovement : MonoBehaviour
 
         m_rb.velocity = Vector2.zero;
 
-        Vector2 dir = new Vector2(x, y);
-
-        m_rb.velocity += dir.normalized * m_DashDistance;
-
+        Vector2 dir = new Vector2(x, y).normalized;
+        //m_rb.drag = 0;
+        m_rb.velocity = dir * m_DashDistance;
+        Debug.Log(m_rb.velocity);
         
         //m_rb.AddForce(dir.normalized * m_DashDistance);
         //m_FallModifier.enabled = false;

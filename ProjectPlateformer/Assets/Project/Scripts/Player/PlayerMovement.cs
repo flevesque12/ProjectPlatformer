@@ -293,11 +293,13 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 dir = new Vector2(x, y).normalized;
         //m_rb.drag = 0;
+        m_FallModifier.enabled = false;
         m_rb.velocity = dir * m_DashDistance;
         Debug.Log(m_rb.velocity);
         
         //m_rb.AddForce(dir.normalized * m_DashDistance);
         //m_FallModifier.enabled = false;
+        //m_FallModifier.enabled = true;
     }
 
 

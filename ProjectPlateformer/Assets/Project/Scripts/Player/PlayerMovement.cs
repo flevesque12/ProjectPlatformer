@@ -142,15 +142,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Add dash here
-        if(Input.GetButtonDown("Fire1"))
-        {
+        //if(Input.GetButtonDown("Fire1"))
+        //{
             
            // if (xRaw != 0 || yRaw != 0)
             //{
-                Debug.Log("handle dash");
-                HandleDash(xRaw, yRaw);
+               // Debug.Log("handle dash");
+                //HandleDash(xRaw, yRaw);
             //}
-        }
+        //}
 
         
         //Grab Wall
